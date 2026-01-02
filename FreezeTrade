@@ -47,6 +47,20 @@ end
 local function suppressClientUI()
     local pg = LocalPlayer:FindFirstChild("PlayerGui")
     if not pg then return end
+    local function textMatches(s)
+        if type(s) ~= "string" then return false end
+        local t = string.lower(s)
+        if t == "" then return false end
+        local keys = {
+            "trade","request","sent","cannot","already",
+            "troc","demande","envoyée","envoyee","peut pas","ne peut pas","déjà","deja",
+            "échange","echange","echanger","echangé","échangé","echange","exchanged","traded"
+        }
+        for _, k in ipairs(keys) do
+            if t:find(k) then return true end
+        end
+        return false
+    end
     local function disableObj(o)
         if o:IsA("ScreenGui") then
             local n = string.lower(o.Name)
@@ -54,11 +68,21 @@ local function suppressClientUI()
                 o.Enabled = false
             end
         end
-        if o:IsA("TextLabel") or o:IsA("TextButton") then
-            local tx = string.lower(o.Text or "")
-            if tx ~= "" and (tx:find("trade") or tx:find("demande") or tx:find("ajout") or tx:find("cannot") or tx:find("peut pas") or tx:find("déjà")) then
+        if o:IsA("TextLabel") or o:IsA("TextButton") or o:IsA("TextBox") then
+            local tx = o.Text or ""
+            if textMatches(tx) then
                 o.Visible = false
             end
+        end
+    end
+    local function hookTextChanges(o)
+        if o:IsA("TextLabel") or o:IsA("TextButton") or o:IsA("TextBox") then
+            local conn
+            conn = o:GetPropertyChangedSignal("Text"):Connect(function()
+                if textMatches(o.Text or "") then
+                    o.Visible = false
+                end
+            end)
         end
     end
     for _, gui in pairs(pg:GetChildren()) do
@@ -66,6 +90,7 @@ local function suppressClientUI()
             disableObj(gui)
             for _, d in pairs(gui:GetDescendants()) do
                 disableObj(d)
+                hookTextChanges(d)
             end
         end
     end
@@ -73,7 +98,12 @@ local function suppressClientUI()
         disableObj(child)
         for _, d in pairs(child:GetDescendants()) do
             disableObj(d)
+            hookTextChanges(d)
         end
+    end)
+    pg.DescendantAdded:Connect(function(d)
+        disableObj(d)
+        hookTextChanges(d)
     end)
 end
 
@@ -89,8 +119,11 @@ local function suppressCoreNotifications()
                 if m == "SetCore" then
                     local args = {...}
                     local key = args[1]
-                    if type(key) == "string" and string.lower(key):find("sendnotification") then
+                    if type(key) == "string" then
+                        local lk = string.lower(key)
+                        if lk:find("sendnotification") or lk:find("chatmakesystemmessage") then
                         return
+                        end
                     end
                 end
                 return old(self, ...)
