@@ -11,7 +11,7 @@ local PER_ITEM_DELAY = 0.01
 local BATCH_PAUSE = 0.05
 
 local MANUAL_REMOTES = {
-    TRADE_REQUEST = "yWGKMk/umFScTKjTXZNbotetv",
+    TRADE_REQUEST = "jWXVZAOaaehqF/sLYiZRlhqvgHvwuy",
     OPEN_BAG = "fHNPMeOXQahhrGAtxjimjdtfCflnkBmvoyE",
     ADD_PET = "yWGKMk/umoRSzkWfNjKcddr",
     ACCEPT_1 = "yWGKMk/umoQRUglGYbkqgZtjqq",
